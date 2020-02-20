@@ -1,0 +1,202 @@
+%\documentclass[12pt, preprint]{aastex}
+\documentclass[preprint,times,tighten]{aastex63}
+
+\usepackage{epsf,color,amsmath}
+\usepackage{multirow}
+\usepackage{cancel}
+
+\newcommand{\sfrac}[2]{\mathchoice%
+  {\kern0em\raise.5ex\hbox{\the\scriptfont0 #1}\kern-.15em/
+    \kern-.15em\lower.25ex\hbox{\the\scriptfont0 #2}}
+  {\kern0em\raise.5ex\hbox{\the\scriptfont0 #1}\kern-.15em/
+    \kern-.15em\lower.25ex\hbox{\the\scriptfont0 #2}}
+  {\kern0em\raise.5ex\hbox{\the\scriptscriptfont0 #1}\kern-.2em/
+    \kern-.15em\lower.25ex\hbox{\the\scriptscriptfont0 #2}} {#1\!/#2}}
+
+\newcommand{\myhalf}{\sfrac{1}{2}}
+\newcommand{\nph}{{n+\myhalf}}
+\newcommand{\nmh}{{n-\myhalf}}
+
+\newcommand{\inp}{\mathrm{in}}
+\newcommand{\outp}{\mathrm{out}}
+
+% boldsymbol means bold italic
+\newcommand{\eb}{{\bf{e}}}
+\newcommand{\Ub}{{\bf{U}}}
+\newcommand{\xb}{{\bf{x}}}
+\newcommand{\kb}{{\bf{k}}}
+\newcommand{\Vb}{{\bf{V}}_n}
+\newcommand{\Vbhat}{{\bf{\widehat{V}}}_n}
+\newcommand{\Omegab}{{\bf{\Omega}}}
+\newcommand{\gb}{{\bf{g}}}
+\newcommand{\rb}{{\bf{r}}}
+
+\newcommand{\pb}{p_\mathrm{base}}
+\newcommand{\epsdot}{\dot{\epsilon}}
+\newcommand{\qburn}{q_\mathrm{burn}}
+\newcommand{\rt}{\tilde{r}_0}
+
+
+\newcommand{\nablab}{\mathbf{\nabla}}
+\newcommand{\dt}{\Delta\ t}
+
+\newcommand{\omegadot}{\dot{\omega}}
+
+\newcommand{\Hext}{H_{\rm ext}}
+\newcommand{\Hnuc}{H_{\rm nuc}}
+\newcommand{\kth}{k_{\rm th}}
+
+\newcommand{\Gammaonebar}{\overline{\Gamma}_1}
+\newcommand{\Sbar}{\overline{S}}
+
+\newcommand{\etarho}{\eta_\rho}
+\newcommand{\etarhoh}{\eta_{\rho~h}}
+
+\newcommand{\Ubt}{\widetilde{\Ub}}
+\newcommand{\wt}{\widetilde{w}}
+
+\newcommand{\He}{$^4$He}
+\newcommand{\C}{$^{12}$C}
+\newcommand{\Fe}{$^{56}$Fe}
+
+\newcommand{\isot}[2]{$^{#2}\mathrm{#1}$}
+\newcommand{\isotm}[2]{{}^{#2}\mathrm{#1}}
+
+\newcommand{\maestro}{{\sf MAESTRO}}
+\newcommand{\castro}{{\sf Castro}}
+\newcommand{\amrex}{{\sf AMReX}}
+\newcommand{\pynucastro}{{\sf pynucastro}}
+
+\newcommand{\avg}[1]{\overline{#1}}
+\newcommand{\avgtwod}[1]{\langle~#1 \rangle}
+\newcommand{\rms}[2]{\left(\delta#1\right)_{r_{#2}}}
+\newcommand{\mymax}[1]{\left(#1\right)_{\rm max}}
+
+\newcommand{\Tb}{\ensuremath{T_\mathrm{base}}}
+\newcommand{\gcc}{\mathrm{g~cm^{-3} }}
+\newcommand{\cms}{\mathrm{cm~s^{-1} }}
+
+\newcommand{\half}{\frac{1}{2}}
+
+\setlength{\marginparwidth}{0.5in}
+
+\newcommand{\MarginPar}[1]{
+    \marginpar{\vskip-\baselineskip%
+               \raggedright%
+               \tiny\sffamily%
+               {\color{red}\hrule%
+               \smallskip%
+               #1\par%
+               \smallskip%
+               \hrule}}%
+}
+
+\newcommand{\AssignTo}[1]{
+    \marginpar{\vskip-\baselineskip%
+               \raggedright%
+               \tiny\sffamily%
+               {\color{blue}\hrule%
+               \smallskip%
+               #1\par%
+               \smallskip%
+               \hrule}}%
+}
+
+\begin{document}
+%======================================================================
+% Title
+%======================================================================
+\title{Pynucastro Methods and Verification}
+
+\shorttitle{Pynucastro}
+\shortauthors{Pynucastro Development Team}
+
+\author[0000-0000-0000-0000]{Pynucastro Development Team}
+\affiliation{Planet Earth}
+
+\correspondingauthor{Pynucastro Development Team}
+\email{weshouldprobablyhaveanemail@somewhere}
+
+
+%======================================================================
+% Abstract and Keywords
+%======================================================================
+\begin{abstract}
+We present pynucastro, a software tool for interacting with nuclear
+reaction rate databases for pedagogical and research purposes. We
+also present verification tests for pynucastro as well as code
+comparisons with other community codes for integrating general
+reaction networks.
+\end{abstract}
+
+\keywords{X-ray bursts (1814), Nucleosynthesis (1131), Open source software (1866), Computational methods (1965)}
+
+%======================================================================
+% Introduction
+%======================================================================
+\section{Introduction}\label{Sec:Introduction}
+
+\begin{itemize}
+    \item Outline existing need for a code like this
+    \item Review previous community codes for reaction networks
+    \item Describe what we are doing differently (vis, code generation, ...)
+    \item Introduce the verification and code comparison problems we will talk about later
+    \item Discuss the big picture: what data we turn into what ODEs for what other codes (Castro, MAESTROeX)
+    \item Sources of data for pynucastro (Reaclib, tabulated weak rates, CODATA, Atomic Mass Evaluation, ...)
+\end{itemize}
+
+%======================================================================
+% Software Design
+%======================================================================
+\section{Software Design}\label{Sec:Design}
+
+\begin{itemize}
+    \item Overview of the structure of the python code comprising pynucastro 
+    \item Present visualization capabilities with Jupyter notebooks 
+    \item Discuss ODE construction with Sympy 
+    \item Discuss code template processing system for code generation
+    \item Discuss different code outputs (python networks, StarKiller Microphysics networks)
+    \item Discuss CI approach and what parts of pynucastro we test
+\end{itemize}
+
+%======================================================================
+% Verification 
+%======================================================================
+\section{Simple Verification Tests}\label{Sec:Verification}
+
+\begin{itemize}
+    \item Find a way to verify sub-components of pynucastro
+    \item Present simple tests where we could get the answer analytically?
+    \item At least one test for each Reaclib chapter, plus tabulated rates?
+\end{itemize}
+
+%======================================================================
+% Code Comparisons
+%======================================================================
+\section{Code Comparisons}\label{Sec:Comparisons}
+
+\begin{itemize}
+    \item Describe other codes for the comparison (XNet, Skynet, MESA?)
+    \item Outline similarities and differences in the microphysics and integration strategy for the codes
+    \item Outline real problems we will compare with other codes using a range of networks
+    \item XRBs? (one zone burns, thermodynamic trajectories from multi-D flames)
+    \item Discuss performance?
+    \item Discuss ease of use/python vs other APIs?
+\end{itemize}
+
+%======================================================================
+% Conclusions/Outlook
+%======================================================================
+\section{Conclusions and Outlook}\label{Sec:Conclusions}
+
+Conclude something, invite people to create issues/submit PRs.
+
+%======================================================================
+% References
+%======================================================================
+
+\bibliographystyle{aasjournal}
+\bibliography{ws}
+
+
+\end{document}

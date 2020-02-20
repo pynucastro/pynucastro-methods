@@ -1,0 +1,5 @@
+This paper describes the scientific and technical goals of pynucastro, the software design, 
+and verification tests and code comparisons for selected nuclear astro problems.
+
+As we're currently using pynucastro for unpublished production simulations,
+it would be good to present all this in a paper as well to document and validate our approach.
